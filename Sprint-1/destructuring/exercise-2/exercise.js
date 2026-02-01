@@ -82,4 +82,15 @@ function gryffindorPeople(arr) {
   return result
 }
 
-console.log(gryffindorPeople(hogwarts))
+function teacherWithPet(arr) {
+  let result = []
+
+  for (let person of arr) {
+    if (person.occupation === "Teacher" && person.pet) {
+      result.push(`${person.firstName} ${person.lastName}`)
+    }
+  }
+  return result
+}
+
+console.log(teacherWithPet(hogwarts))
