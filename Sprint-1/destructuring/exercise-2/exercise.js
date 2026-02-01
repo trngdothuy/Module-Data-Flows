@@ -70,3 +70,16 @@ let hogwarts = [
     occupation: "Teacher",
   },
 ];
+
+function gryffindorPeople(arr) {
+  let result = []
+
+  for (let person of arr) {
+    if (person.house === 'Gryffindor') {
+    result.push(`${person.firstName} ${person.lastName}`)
+  }
+  }
+  return result
+}
+
+console.log(gryffindorPeople(hogwarts))
