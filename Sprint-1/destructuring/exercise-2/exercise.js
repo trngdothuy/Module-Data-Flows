@@ -79,7 +79,7 @@ function gryffindorPeople(arr) {
     result.push(`${person.firstName} ${person.lastName}`)
   }
   }
-  return result
+  return result.join("\n")
 }
 
 function teacherWithPet(arr) {
@@ -90,7 +90,7 @@ function teacherWithPet(arr) {
       result.push(`${person.firstName} ${person.lastName}`)
     }
   }
-  return result
+  return result.join("\n")
 }
 
-console.log(teacherWithPet(hogwarts))
+console.log(gryffindorPeople(hogwarts))
