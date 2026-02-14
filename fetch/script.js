@@ -1,0 +1,1 @@
+fetch("https://xkcd.now.sh/?comic=latest")
