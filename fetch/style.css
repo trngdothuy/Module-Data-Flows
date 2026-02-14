@@ -1,0 +1,23 @@
+* {
+    background-color: antiquewhite;
+    color:rgb(64, 60, 60); 
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cards {
+    padding: 0 30px;
+}
+
+img {
+    max-width: 500px;
+}
+
+p {
+    text-align: center;
+}
