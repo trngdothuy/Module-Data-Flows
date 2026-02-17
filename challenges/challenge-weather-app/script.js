@@ -51,6 +51,7 @@ async function makeThumbnails(data) {
     clickableThumbnails.forEach(thumb => {
         thumb.addEventListener("click", () => {
             console.log("photosDataUsed[thumb.id]", data[thumb.id])
+            thumb.style = "outline: 1px solid white;"
             uploadBigPhoto(data[thumb.id])
         })
     })
