@@ -219,6 +219,15 @@
   color: #fff;
 }
 
+/* Info div */
+#info-div {
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  justify-content: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Mediaquery overrides                                                       */
 /*----------------------------------------------------------------------------*/
