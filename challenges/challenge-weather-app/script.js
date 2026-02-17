@@ -46,6 +46,7 @@ async function makeThumbnails(data) {
         thumbnails.push(thumb)
     }
     console.log("thumbnails", thumbnails)
+    thumbs.innerHTML = ""
     thumbs.append(...thumbnails)
 
     const clickableThumbnails = document.querySelectorAll(".thumb")
