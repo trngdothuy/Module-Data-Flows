@@ -18,10 +18,12 @@ async function updateDescription() {
 
 async function uploadBigPhoto(data) {
     let img = document.createElement('img')
-    img.src = data.urls.raw
+    img.src = data.urls.regular
     img.alt = data.alt_description
     img.id = "big-photo"
-    console.log("img", img)
+    console.log("big-photo", img)
+    console.log("figure", figure)
+    figure.innerHTML = ""
     figure.append(img)
 }
 

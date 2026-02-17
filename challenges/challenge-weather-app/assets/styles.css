@@ -76,6 +76,10 @@
   background: hotpink;
 }
 
+.big-photo {
+  object-fit: fill;
+}
+
 /* Thumbs
 ------------------------------------------------------------------------------*/
 .thumbs {
