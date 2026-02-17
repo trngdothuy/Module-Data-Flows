@@ -1,8 +1,7 @@
 const figure = document.querySelector('figure')
-console.log("figure", figure)
 const conditions = document.getElementById('conditions')
-console.log("conditions", conditions)
 let description = ""
+const thumbs = document.getElementById('thumbs')
 
 async function fetchData() {
     const data = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d79534d83bab813bb42219e82a1dffda')
@@ -13,22 +12,61 @@ async function fetchData() {
 async function updateDescription() {
     const data = await fetchData()
     description = data.weather[0].description
-    console.log("description", description)
     conditions.innerText = description
     return description
 }
 
-async function fetchPhoto() {
-    const photoKeyword = await updateDescription()
-    console.log("photoKeyword", photoKeyword)
-    const response = await fetch(`https://api.unsplash.com/search/photos?query=${photoKeyword}&client_id=5a35_J1WFoto88w1SxZ3rDkK8fZ-6RWFfn4_gPs5juI`)
-    const unsplashData = await response.json()
-    console.log("photos", unsplashData.results[0].urls)
-    const photos = await unsplashData.results[0].urls  
+async function uploadBigPhoto(data) {
     let img = document.createElement('img')
-    img.src = photos["raw"]
+    img.src = data.urls.raw
+    img.alt = data.alt_description
+    img.id = "big-photo"
     console.log("img", img)
     figure.append(img)
+}
+
+async function makeThumbnails(data) {
+    let thumbnails = []
+    for (let i = 0; i < data.length; i++) {
+        const thumb = document.createElement("img")
+        thumb.src = data[i].urls.thumb
+        thumb.alt = data[i].alt_description
+        thumb.style = "width:50px"
+        thumb.className = "thumb"
+        thumb.id = i
+        thumbnails.push(thumb)
+    }
+    console.log("thumbnails", thumbnails)
+    thumbs.append(...thumbnails)
+
+    const clickableThumbnails = document.querySelectorAll(".thumb")
+
+    clickableThumbnails.forEach(thumb => {
+        thumb.addEventListener("click", () => {
+            console.log("photosDataUsed[thumb.id]", data[thumb.id])
+            uploadBigPhoto(data[thumb.id])
+        })
+    })
+}
+
+async function fetchPhoto() {
+    // fetch data from unsplash
+    const photoKeyword = await updateDescription()
+    const response = await fetch(`https://api.unsplash.com/search/photos?query=${photoKeyword}&client_id=5a35_J1WFoto88w1SxZ3rDkK8fZ-6RWFfn4_gPs5juI`)
+    const unsplashData = await response.json()
+    console.log("photosDataReceived", unsplashData.results)
+    const photosDataReceived = await unsplashData.results
+    // make a copy of the result to use later
+    const photosDataUsed = [...photosDataReceived]
+    console.log("photosDataUsed", photosDataUsed)
+
+    // extract the main photo and show it
+    let bigPhoto = photosDataUsed[0]
+    console.log("bigPhoto", bigPhoto)
+    uploadBigPhoto(bigPhoto)
+
+    // make thumbnails
+    makeThumbnails(photosDataUsed)
 }
 
 fetchPhoto()
