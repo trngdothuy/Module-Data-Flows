@@ -2,6 +2,7 @@ const figure = document.querySelector('figure')
 const conditions = document.getElementById('conditions')
 let description = ""
 const thumbs = document.getElementById('thumbs')
+const creditUser = document.getElementById("credit-user")
 
 async function fetchData() {
     const data = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d79534d83bab813bb42219e82a1dffda')
@@ -17,6 +18,7 @@ async function updateDescription() {
 }
 
 async function uploadBigPhoto(data) {
+    console.log("uploadBigPhoto data", data)
     let img = document.createElement('img')
     img.src = data.urls.regular
     img.alt = data.alt_description
@@ -25,6 +27,9 @@ async function uploadBigPhoto(data) {
     console.log("figure", figure)
     figure.innerHTML = ""
     figure.append(img)
+
+    creditUser.innerText = data.user.name
+    creditUser.href = data.user.portfolio_url
 }
 
 async function makeThumbnails(data) {
