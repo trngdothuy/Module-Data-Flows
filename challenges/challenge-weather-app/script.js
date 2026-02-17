@@ -11,7 +11,7 @@ async function fetchPhoto() {
     const data = await fetchData()
     const description = data.weather[0].description.split(" ").join("-")
     console.log("description", description)
-    const response = await fetch('https://api.unsplash.com/search/photos?query=snow&client_id=5a35_J1WFoto88w1SxZ3rDkK8fZ-6RWFfn4_gPs5juI')
+    const response = await fetch(`https://api.unsplash.com/search/photos?query=${description}&client_id=5a35_J1WFoto88w1SxZ3rDkK8fZ-6RWFfn4_gPs5juI`)
     const unsplashData = await response.json()
     console.log("photos", unsplashData.results[0].urls)
     const photos = await unsplashData.results[0].urls  
