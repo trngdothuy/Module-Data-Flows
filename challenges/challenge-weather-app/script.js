@@ -35,13 +35,10 @@ async function updateDescription() {
 }
 
 async function uploadBigPhoto(data) {
-    // console.log("uploadBigPhoto data", data)
     let img = document.createElement('img')
     img.src = data.urls.regular
     img.alt = data.alt_description
     img.id = "big-photo"
-    // console.log("big-photo", img)
-    // console.log("figure", figure)
     figure.innerHTML = ""
     figure.append(img)
 
@@ -60,7 +57,6 @@ async function makeThumbnails(data) {
         thumb.id = i
         thumbnails.push(thumb)
     }
-    // console.log("thumbnails", thumbnails)
     thumbs.innerHTML = ""
     thumbs.append(...thumbnails)
 
@@ -68,7 +64,6 @@ async function makeThumbnails(data) {
 
     clickableThumbnails.forEach(thumb => {
         thumb.addEventListener("click", () => {
-            // console.log("photosDataUsed[thumb.id]", data[thumb.id])
             thumb.style = "outline: 1px solid white;"
             uploadBigPhoto(data[thumb.id])
         })
@@ -80,15 +75,12 @@ async function fetchPhoto() {
     const photoKeyword = await updateDescription()
     const response = await fetch(`https://api.unsplash.com/search/photos?query=${photoKeyword}&client_id=5a35_J1WFoto88w1SxZ3rDkK8fZ-6RWFfn4_gPs5juI`)
     const unsplashData = await response.json()
-    // console.log("photosDataReceived", unsplashData.results)
     const photosDataReceived = await unsplashData.results
     // make a copy of the result to use later
     const photosDataUsed = [...photosDataReceived]
-    // console.log("photosDataUsed", photosDataUsed)
 
     // extract the main photo and show it
     let bigPhoto = photosDataUsed[0]
-    // console.log("bigPhoto", bigPhoto)
     uploadBigPhoto(bigPhoto)
 
     // make thumbnails
@@ -102,6 +94,5 @@ form.addEventListener("submit", (e) => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     city = data.city
-    // console.log("clicked", city)
     fetchPhoto()
 })
