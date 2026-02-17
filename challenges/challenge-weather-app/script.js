@@ -3,9 +3,11 @@ const conditions = document.getElementById('conditions')
 let description = ""
 const thumbs = document.getElementById('thumbs')
 const creditUser = document.getElementById("credit-user")
+const form = document.getElementById("search")
+let city = "London,uk"
 
 async function fetchData() {
-    const data = await fetch('http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d79534d83bab813bb42219e82a1dffda')
+    const data = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=d79534d83bab813bb42219e82a1dffda`)
     const result = await data.json()
     return result
 }
@@ -79,3 +81,11 @@ async function fetchPhoto() {
 
 fetchPhoto()
 
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    city = data.city
+    console.log("clicked", city)
+    fetchPhoto()
+})
