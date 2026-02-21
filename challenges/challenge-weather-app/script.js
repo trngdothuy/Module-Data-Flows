@@ -1,0 +1,98 @@
+const figure = document.querySelector('figure')
+const conditions = document.getElementById('conditions')
+let description = ""
+const thumbs = document.getElementById('thumbs')
+const creditUser = document.getElementById("credit-user")
+const form = document.getElementById("search")
+let city = "London,uk"
+const infoDiv = document.getElementById("info-div")
+
+async function fetchData() {
+    const data = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=d79534d83bab813bb42219e82a1dffda`)
+    const result = await data.json()
+    console.log(result)
+
+    displayInformation(result)
+    return result
+}
+
+async function displayInformation(data) {
+    infoDiv.innerText = `
+    City: ${data.name}, ${data.sys.country}
+    Weather: ${data.weather[0].description}
+    Temperature: ${data.main.temp}
+    Humidity:  ${data.main.humidity}
+    Wind Speed: ${data.wind.speed}
+    `
+    console.log("info", info)
+}
+
+async function updateDescription() {
+    const data = await fetchData()
+    description = data.weather[0].description
+    conditions.innerText = description
+    return description
+}
+
+async function uploadBigPhoto(data) {
+    let img = document.createElement('img')
+    img.src = data.urls.regular
+    img.alt = data.alt_description
+    img.id = "big-photo"
+    figure.innerHTML = ""
+    figure.append(img)
+
+    creditUser.innerText = data.user.name
+    creditUser.href = data.user.portfolio_url
+}
+
+async function makeThumbnails(data) {
+    let thumbnails = []
+    for (let i = 0; i < data.length; i++) {
+        const thumb = document.createElement("img")
+        thumb.src = data[i].urls.thumb
+        thumb.alt = data[i].alt_description
+        thumb.style = "width:50px"
+        thumb.className = "thumb"
+        thumb.id = i
+        thumbnails.push(thumb)
+    }
+    thumbs.innerHTML = ""
+    thumbs.append(...thumbnails)
+
+    const clickableThumbnails = document.querySelectorAll(".thumb")
+
+    clickableThumbnails.forEach(thumb => {
+        thumb.addEventListener("click", () => {
+            thumb.style = "outline: 1px solid white;"
+            uploadBigPhoto(data[thumb.id])
+        })
+    })
+}
+
+async function fetchPhoto() {
+    // fetch data from unsplash
+    const photoKeyword = await updateDescription()
+    const response = await fetch(`https://api.unsplash.com/search/photos?query=${photoKeyword}&client_id=5a35_J1WFoto88w1SxZ3rDkK8fZ-6RWFfn4_gPs5juI`)
+    const unsplashData = await response.json()
+    const photosDataReceived = await unsplashData.results
+    // make a copy of the result to use later
+    const photosDataUsed = [...photosDataReceived]
+
+    // extract the main photo and show it
+    let bigPhoto = photosDataUsed[0]
+    uploadBigPhoto(bigPhoto)
+
+    // make thumbnails
+    makeThumbnails(photosDataUsed)
+}
+
+fetchPhoto()
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    city = data.city
+    fetchPhoto()
+})
